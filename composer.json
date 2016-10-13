@@ -1,0 +1,37 @@
+{
+    "name": "zendframework/skeleton-application",
+    "description": "Skeleton Application for ZF2",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2"
+    ],
+    "homepage": "http://framework.zend.com/",
+    "require": {
+        "php": ">=5.3.3",
+        "phpunit/phpunit": ">=4.5.0",
+        "zendframework/zendframework": "2.3.7",
+        "doctrine/doctrine-module": "0.8.0",
+        "doctrine/doctrine-orm-module": "0.8.0",
+        "symfony/yaml": "dev-master",
+        "doctrine/migrations": "dev-master",
+        "bjyoungblood/bjy-profiler": "dev-master",
+        "symfony/event-dispatcher": "dev-master",
+        "psr/log": "dev-master",
+        "doctrine/common": "~2.2",
+        "doctrine/data-fixtures": "v1.0.2",
+        "hounddog/doctrine-data-fixture-module": "0.0.4",
+        "robmorgan/phinx": "^0.6.4"
+
+    },
+    "require-dev": {
+        "doctrine/migrations": "1.*",
+        "squizlabs/php_codesniffer": "1.5.*",
+        "doctrine/orm": "^2.5.4"
+    },
+    "suggest": {
+        "zendframework/zend-form": "if you want to use form elements backed by Doctrine",
+        "doctrine/migrations": "doctrine migrations if you want to keep your schema definitions versioned",
+        "doctrine/mongodb-odm": "for loading MongoDBODM Fixtures"
+    }
+}

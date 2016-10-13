@@ -1,0 +1,33 @@
+Employee:
+  type: entity
+  table: employee
+  repositoryClass: Employee\Repository\EmployeeRepository
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+      options:
+  fields:
+    name:
+      type: string
+      length: 100
+      nullable: false
+      options:
+        fixed: false
+    address:
+      type: string
+      length: 200
+      nullable: true
+      options:
+        fixed: false
+    created:
+      type: datetime
+      nullable: false
+  lifecycleCallbacks:
+    prePersist: [preCreate]
+    postUpdate: [preUpdate]
+  oneToMany:
+    album:
+      targetEntity: Album
+      mappedBy: employee

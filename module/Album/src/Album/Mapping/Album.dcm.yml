@@ -1,0 +1,45 @@
+Album:
+  type: entity
+  table: album
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: IDENTITY
+  fields:
+    artist:
+      type: string
+      length: 255
+      nullable: false
+    title:
+      type: string
+      length: 255
+      nullable: false
+    test:
+      type: string
+      length: 255
+      nullable: false
+    details:
+      type: string
+      length: 255
+      nullable: false
+    empid:
+      type: string
+      length: 255
+      nullable: false
+      column: empId
+    createdat:
+      type: datetime
+      nullable: false
+      column: createdAt
+    updatedat:
+      type: datetime
+      nullable: true
+      column: updatedAt
+  manyToOne:
+    employee:
+      targetEntity: Employee
+      inversedBy: album
+      joinColumns:
+        employee_id:
+          referencedColumnName: id

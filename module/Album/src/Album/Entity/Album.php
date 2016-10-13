@@ -1,0 +1,283 @@
+<?php
+
+namespace Album\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Album
+ *
+ * @ORM\Table(name="album")
+ * @ORM\Entity(repositoryClass="Album\Repository\AlbumRepository")
+ */
+class Album
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="artist", type="string", length=255, nullable=false)
+     */
+    private $artist;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="test", type="string", length=255, nullable=false)
+     */
+    private $test;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="details", type="string", length=255, nullable=false)
+     */
+    private $details;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="empId", type="integer", nullable=true)
+     */
+    private $empid;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     */
+    private $createdat;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
+     */
+    private $updatedat;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set artist
+     *
+     * @param string $artist
+     * @return Album
+     */
+    public function setArtist($artist)
+    {
+        $this->artist = $artist;
+
+        return $this;
+    }
+
+    /**
+     * Get artist
+     *
+     * @return string 
+     */
+    public function getArtist()
+    {
+        return $this->artist;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Album
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set test
+     *
+     * @param string $test
+     * @return Album
+     */
+    public function setTest($test)
+    {
+        $this->test = $test;
+
+        return $this;
+    }
+
+    /**
+     * Get test
+     *
+     * @return string 
+     */
+    public function getTest()
+    {
+        return $this->test;
+    }
+
+    /**
+     * Set details
+     *
+     * @param string $details
+     * @return Album
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
+    /**
+     * Get details
+     *
+     * @return string 
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    /**
+     * Set empid
+     *
+     * @param integer $empid
+     * @return Album
+     */
+    public function setEmpid($empid)
+    {
+        $this->empid = $empid;
+
+        return $this;
+    }
+
+    /**
+     * Get empid
+     *
+     * @return integer 
+     */
+    public function getEmpid()
+    {
+        return $this->empid;
+    }
+
+    /**
+     * Set createdat
+     *
+     * @param \DateTime $createdat
+     * @return Album
+     */
+    public function setCreatedat($createdat)
+    {
+        $this->createdat = $createdat;
+
+        return $this;
+    }
+
+    /**
+     * Get createdat
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedat()
+    {
+        return $this->createdat;
+    }
+
+    /**
+     * Set updatedat
+     *
+     * @param \DateTime $updatedat
+     * @return Album
+     */
+    public function setUpdatedat($updatedat)
+    {
+        $this->updatedat = $updatedat;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedat
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedat()
+    {
+        return $this->updatedat;
+    }
+    
+     /**
+     * @ORM\ManyToOne(
+     *     targetEntity="Employee\Entity\Employee",
+     *     inversedBy="albums",
+     * )
+     * @ORM\JoinColumn(
+     *     name="employeeId",
+     *     referencedColumnName="id",
+     *     nullable=true,
+     * )
+     */
+    private $employee;
+    
+    
+
+    /**
+     * Set employee
+     *
+     * @param \Employee\Entity\Employee $employee
+     * @return Album
+     */
+    public function setEmployee(\Employee\Entity\Employee $employee = null)
+    {
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    /**
+     * Get employee
+     *
+     * @return \Employee\Entity\Employee 
+     */
+    public function getEmployee()
+    {
+        return $this->employee;
+    }
+}
