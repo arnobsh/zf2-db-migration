@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DB-Migration" default="db-migration">
+    <!-- run the ant timestamp task -->
+    <tstamp/>
+
+
+    <property file="build.migration.properties"/>
+    <!--list of static artifacts that will use for build purpose-->
+    <property name="basedir" value="${basedir}"/>
+    <property name="db-tools" value="${basedir}/db-tools"/>
+    
+    <!-- By default, we assume all tools to be on the $PATH -->
+    
+
+    <!-- Use this when the tools are located as PHARs in ${tools}-->
+    <property name="phinx" value="${basedir}/vendor/bin/phinx"/>
+    
+    <!--    list of targets with property-->
+    
+    <target name="help"
+            description="List of available data migration help">
+        <echo>Set Property: ant set-property -f build.migration.xml </echo>
+        <echo>Test Migration File: ant test-migration-file -f build.migration.xml </echo>
+        <echo>Check Migration Status: ant migration-status -f build.migration.xml </echo>
+        <echo>Generate Migration Script: ant create-migration -f build.migration.xml OR 
+            ant create-migration -Ddefault-migration-script=SriptName -f build.migration.xml</echo>
+        <echo>Migration All:ant migrate -f build.migration.xml</echo>
+        <echo>Migration Target:ant migrate-target -Dtarget-script=SriptName -f build.migration.xml </echo>
+        <echo>Create Breakpoint:ant create-breakpoint -f build.migration.xml </echo>
+        <echo>Toggle Breakpoint:ant toggle-breakpoint -Dtarget-breakpoint=SriptName -f build.migration.xml </echo>
+        <echo>Remove All Breakpoint:ant remove-all-breakpoints -f build.migration.xml </echo>
+        <echo>Rollback Previous:ant rollback-breakpoint -f build.migration.xml </echo>
+        <echo>Rollback Target Breakpoint: ant rollback-target-breakpoints -Dtarget-rollback=SriptName -f build.migration.xml </echo>
+        <echo>Rollback All:ant rollback-all-breakpoints -f build.migration.xml </echo>
+    </target>
+    
+<!--    set up the build environment and properties-->
+    <target name="set-property" description="Set migration environment">
+        <input message="Set up the default environment? ${default-environment}" addproperty="environment" validargs="development,production,testing" defaultvalue="development" />
+        <propertyfile file="build.migration.properties">
+            <entry key="default-environment" type="string" value="${environment}" default="${default-environment}" operation="="/>
+        </propertyfile>
+
+        <input message="Set up the default database ${default-database}" addproperty="database" validargs="db_development_1,db_development_2" defaultvalue="db_development_1" />
+        <propertyfile file="build.migration.properties">
+            <entry key="default-database" type="string" default="${default-database}" value="${database}"  operation="="/>
+        </propertyfile>
+    </target>
+    
+    <!--            check the available database migration list-->
+    <target name="database-list"
+            description="List the available database migration files">
+        <echo>Database List:</echo>
+        <exec executable="/bin/ls">
+            <arg value="${db-tools}" />
+        </exec>
+    </target>
+    
+    <!--    Check the list of available commands listed in phinx-->
+    <target name="migration-command-list"
+            description="List the available database migration commands">
+        <echo>Data Migration Command List:</echo>
+        <exec executable="${phinx}">
+            <arg value="list" />
+        </exec>
+    </target>
+    
+    <!--    test the status of the migrations script-->
+    <target name="test-migration-file"
+            description="Test the migration">
+        <echo>Test the migration script of "${default-database}" of "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="test" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    
+    <!--    check the status of the target database migrations-->
+    <target name="migration-status" depends="help"
+            description="Check the migration status">
+        <echo>Migration Status of "${default-database}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="status" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    
+    <!--    Create a new migration script-->
+    <target name="create-migration" depends="help"
+            description="Create new migration file">
+        <echo>Create migration script for "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="create" />
+            <arg value="${default-migration-script}${TSTAMP}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+
+    <!--    Migrate a script-->
+    <target name="migrate" depends="help"
+            description="Migrate a script">
+        <echo>Migrate a script at "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="migrate" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    
+    <!--    Migrate a script at a target file-->
+    <target name="migrate-target" depends="help"
+            description="Migrate a script at a target point">
+        <echo>Migrate a script at "${default-database}" at "${default-environment}": Target script would be ${target-script}</echo>
+        <exec executable="${phinx}" >
+            <arg value="migrate" />
+            <arg value="--target" />
+            <arg value="${target-script}" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    <!-- Create a breakpoint-->
+    <target name="create-breakpoint" depends="help"
+            description="Create Breakpoint">
+        <echo>Create migration breakpoint for "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="breakpoint" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    
+    <!-- Toggle a breakpoint on target-->
+    <target name="toggle-breakpoint" depends="help"
+            description="Toggle a Breakpoint on specific version">
+        <echo>Toggle migration breakpoint for "${default-database}" at "${default-environment}": Target is ${target-breakpoint}</echo>
+        <exec executable="${phinx}" >
+            <arg value="breakpoint" />
+            <arg value="--target" />
+            <arg value="${target-breakpoint}" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    
+    <!-- Remove all breakpoint-->
+    <target name="remove-all-breakpoints" depends="help"
+            description="Remove all Breakpoint">
+        <echo>Remove all migration breakpoints for "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="breakpoint" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+            <arg value="--remove-all" />
+        </exec>
+    </target>
+    
+    <!-- Rollback all breakpoint-->
+    <target name="rollback-all-breakpoints" depends="help"
+            description="Rollback all Breakpoints">
+        <echo>Rollback all migration breakpoints for "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="rollback" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+            <arg value="--target" />
+            <arg value="0" />
+        </exec>
+    </target>
+    
+    <!-- Rollback all breakpoint-->
+    <target name="rollback-breakpoint" depends="help"
+            description="Rollback previous Breakpoint">
+        <echo>Rollback previous breakpoints for "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="rollback" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+    
+    <!-- Rollback target breakpoint-->
+    <target name="rollback-target-breakpoints" depends="help"
+            description="Rollback target Breakpoints">
+        <echo>Rollback migration breakpoints at target for "${default-database}" at "${default-environment}":</echo>
+        <exec executable="${phinx}" >
+            <arg value="rollback" />
+            <arg value="--target" />
+            <arg value="${target-rollback}" />
+            <arg value="--environment" />
+            <arg value="${default-environment}" />
+            <arg value="--configuration" />
+            <arg value="${db-tools}/${default-database}/phinx.yml" />
+        </exec>
+    </target>
+</project>
