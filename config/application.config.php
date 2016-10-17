@@ -4,13 +4,8 @@ return array(
         'Application',
         'DoctrineModule',
         'DoctrineORMModule',
-        //'DoctrineMongoODMModule',
-        'DoctrineDataFixtureModule',
         'Album',
         'Track',
-        'BgportalSessionToolbar',
-        'Blog',
-        'Checklist',
         'Employee',
     ),
     'module_listener_options' => array(

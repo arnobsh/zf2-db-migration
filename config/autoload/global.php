@@ -45,11 +45,11 @@ return array(
         ),
         "environments" => array(
             "default_migration_table" => "migrations",
-            "default_database" => "zftutordoctrine",
-            "zftutordoctrine" => array(
+            "default_database" => "development_db_1",
+            "development_db_1" => array(
                 "adapter" => "mysql",
                 "host" => "localhost",
-                "name" => "zftutordoctrine",
+                "name" => "development_db_1",
                 "user" => "root",
                 "pass" => "dri@2016",
                 "port" => "3306"

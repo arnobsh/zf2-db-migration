@@ -14,18 +14,14 @@
         "doctrine/doctrine-module": "0.8.0",
         "doctrine/doctrine-orm-module": "0.8.0",
         "symfony/yaml": "dev-master",
-        "doctrine/migrations": "dev-master",
         "bjyoungblood/bjy-profiler": "dev-master",
         "symfony/event-dispatcher": "dev-master",
         "psr/log": "dev-master",
         "doctrine/common": "~2.2",
-        "doctrine/data-fixtures": "v1.0.2",
-        "hounddog/doctrine-data-fixture-module": "0.0.4",
         "robmorgan/phinx": "^0.6.4"
 
     },
     "require-dev": {
-        "doctrine/migrations": "1.*",
         "squizlabs/php_codesniffer": "1.5.*",
         "doctrine/orm": "^2.5.4"
     },
